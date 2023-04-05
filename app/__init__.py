@@ -1,7 +1,7 @@
 from flask import Flask
 from config import ProductionConfig
 from flask_cors import CORS
-from .routes import api_routes
+from app.routes import api_routes
 from app.databases import db
 
 app = Flask(__name__)
