@@ -6,6 +6,9 @@ __pycache__/
 venv/
 # C extensions
 *.so
+Scripts
+.vscode
+pyvenv.cfg
 
 # Distribution / packaging
 build/

@@ -1,11 +1,11 @@
 from flask import Flask
-from config import DevelopmentConfig
+from config import ProductionConfig
 from flask_cors import CORS
 from .routes import api_routes
-from .databases import db
+from app.databases import db
 
 app = Flask(__name__)
-app.config.from_object(DevelopmentConfig)
+app.config.from_object(ProductionConfig)
 app_context = app.app_context()
 app_context.push()
 cors = CORS(app)
