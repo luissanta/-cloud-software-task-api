@@ -14,18 +14,26 @@ def get_tasks():
 
 @api_routes.route('/tasks', methods=['POST'])
 def create_task():
-    return {'id': 1, 'status': 'uploaded'}, 201
+    file = request.files['file']
+    new_format = request.form.get('newFormat', None)
+    if new_format is None:
+        return "The newFormat is required",400
+    name_file = file.filename
+    file_data = file.read()
+    id_user = 1
+    service = TaskService()
+    return json.dumps(service.post_task(id_user, name_file,file_data, new_format))
 
 
 @api_routes.route('/tasks/<int:id_task>', methods=['GET'])
 def get_task(id_task: int):
-    return {
-        'id': id_task,
-        'fileName': 'https://drive.google.com/drive/u/1/folders/1iUJ-QtDmzi1VMGTxLeluoRDgvXGUb5uH',
-        'status': 'pending'
-    }, 200
+    service = TaskService()
+    return json.dumps(service.get_task_by_id(id_task))
 
 
 @api_routes.route('/tasks/<int:id_task>', methods=['DELETE'])
 def delete_task(id_task: int):
+    service = TaskService()
+    service.delete_task_by_id(id_task)
     return {}, 204
+
