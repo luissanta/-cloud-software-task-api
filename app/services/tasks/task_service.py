@@ -38,6 +38,14 @@ class TaskService:
         if task:
             db.session.delete(task)
             db.session.commit()
+            original_file = Upload.query.filter(Upload.id == task.id_original_file).first()
+            converted_file = Upload.query.filter(Upload.id == task.id_converted_file).first()
+            if original_file:
+                db.session.delete(original_file)
+                db.session.commit()
+            if converted_file:
+                db.session.delete(converted_file)
+                db.session.commit()
             result = True
         return {'Deleted': result}
     
