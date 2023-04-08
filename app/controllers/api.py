@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, jsonify, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.tasks import TaskService
 
 api_routes = Blueprint('api', __name__)
@@ -11,7 +11,7 @@ api_routes = Blueprint('api', __name__)
 def get_tasks():
     max = request.args.get('max', None)
     order = request.args.get('order', None)
-    id_user = 1
+    id_user = get_jwt_identity()
     service = TaskService()
     return json.dumps(service.get_task(id_user, max, order))
 
@@ -26,7 +26,7 @@ def create_task():
 
     name_file = file.filename
     file_data = file.read()
-    id_user = 1
+    id_user = get_jwt_identity()
     service = TaskService()    
     return json.dumps(service.post_task(id_user, name_file, file_data, new_format))
 

@@ -5,10 +5,13 @@ import uuid
 from app.databases import db
 from app.models.models import Task, Upload
 from app import app
+from flask_jwt_extended import create_access_token
 
 class TestTask(TestCase):
     def setUp(self):
-        self.client = app.test_client()    
+        self.client = app.test_client()   
+        additional_claims = {"id": 1}
+        self.token = create_access_token(identity=1, additional_claims=additional_claims)        
         
 
     def tearDown(self):
@@ -22,8 +25,8 @@ class TestTask(TestCase):
         db.session.commit()
 
     def test_get_empty_list(self):      
-        endpoint_tasks = "/api/tasks"
-        self.token = ""
+        endpoint_tasks = "/api/tasks"        
+        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -32,8 +35,7 @@ class TestTask(TestCase):
 
     def test_get_one_element(self):    
         mock_task = self.task_mock(1)  
-        endpoint_tasks = "/api/tasks"
-        self.token = ""
+        endpoint_tasks = "/api/tasks"        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -50,7 +52,6 @@ class TestTask(TestCase):
     def test_get_five_elements(self):    
         mock_task = self.task_mock(5)  
         endpoint_tasks = "/api/tasks"
-        self.token = ""
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -67,8 +68,7 @@ class TestTask(TestCase):
 
     def test_get_max_3_elements(self):    
         mock_task = self.task_mock(5)  
-        endpoint_tasks = "/api/tasks?max=3"
-        self.token = ""
+        endpoint_tasks = "/api/tasks?max=3"        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -85,8 +85,7 @@ class TestTask(TestCase):
 
     def test_get_max_3_elements_order_asc_by_default(self):    
         mock_task = self.task_mock(5)  
-        endpoint_tasks = "/api/tasks?max=3"
-        self.token = ""
+        endpoint_tasks = "/api/tasks?max=3"        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -107,8 +106,7 @@ class TestTask(TestCase):
 
     def test_get_max_3_elements_order_asc(self):    
         mock_task = self.task_mock(5)  
-        endpoint_tasks = "/api/tasks?max=3&order=0"
-        self.token = ""
+        endpoint_tasks = "/api/tasks?max=3&order=0"        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -129,8 +127,7 @@ class TestTask(TestCase):
 
     def test_get_elements_order_asc(self):    
         mock_task = self.task_mock(5)  
-        endpoint_tasks = "/api/tasks?order=0"
-        self.token = ""
+        endpoint_tasks = "/api/tasks?order=0"    
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -151,8 +148,7 @@ class TestTask(TestCase):
 
     def test_get_elements_order_desc(self):    
         mock_task = self.task_mock(5)  
-        endpoint_tasks = "/api/tasks?order=1"
-        self.token = ""
+        endpoint_tasks = "/api/tasks?order=1"        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -173,8 +169,7 @@ class TestTask(TestCase):
 
     def test_get_max_3_elements_order_desc(self):    
         mock_task = self.task_mock(5)  
-        endpoint_tasks = "/api/tasks?max=3&order=1"
-        self.token = ""
+        endpoint_tasks = "/api/tasks?max=3&order=1"        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
         result_get_tasks_json = json.loads(result_get_tasks.get_data())
@@ -194,8 +189,7 @@ class TestTask(TestCase):
         self.assertEqual(200,result_get_tasks.status_code)
 
     def test_post_task(self):
-        endpoint_tasks = "/api/tasks"
-        self.token = ""
+        endpoint_tasks = "/api/tasks"        
         self.headers = {'Content-Type': 'multipart/form-data', "Authorization": "Bearer {}".format(self.token)}
         self.archivo = os.path.join(os.path.dirname(__file__), 'test.txt')
         
@@ -208,8 +202,7 @@ class TestTask(TestCase):
             self.assertEqual(200,result_get_tasks.status_code)
 
     def test_post_task_without_file(self):
-        endpoint_tasks = "/api/tasks"
-        self.token = ""
+        endpoint_tasks = "/api/tasks"        
         self.headers = {'Content-Type': 'multipart/form-data', "Authorization": "Bearer {}".format(self.token)}
         
         data = {'newFormat':'zip'}
@@ -218,8 +211,7 @@ class TestTask(TestCase):
         self.assertEqual(400,result_get_tasks.status_code)
 
     def test_post_task_without_newFormat(self):
-        endpoint_tasks = "/api/tasks"
-        self.token = ""
+        endpoint_tasks = "/api/tasks"        
         self.headers = {'Content-Type': 'multipart/form-data', "Authorization": "Bearer {}".format(self.token)}
         self.archivo = os.path.join(os.path.dirname(__file__), 'test.txt')
         
@@ -230,26 +222,23 @@ class TestTask(TestCase):
             self.assertEqual(400,result_get_tasks.status_code)
 
     def test_get_task_by_id(self):
-        self.task_mock(2)
-        id_task = 1
-        endpoint_tasks = "/api/tasks/"+str(id_task)
-        self.token = ""
+        mock_task = self.task_mock(2)
+        id_task = mock_task[0].task_id
+        endpoint_tasks = "/api/tasks/"+str(id_task)        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
 
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
-        result_get_tasks_json = json.loads(result_get_tasks.get_data())
-        for result_task in result_get_tasks_json:  
-            self.assertIsNotNone(result_task['file_name'])
-            self.assertIsNotNone(result_task['id'])            
-            self.assertIsNotNone(result_task['status']) 
-        self.assertEqual(1,len(result_get_tasks_json))
+        result_get_tasks_json = json.loads(result_get_tasks.get_data())        
+       
+        self.assertIsNotNone(result_get_tasks_json['file_name'])
+        self.assertIsNotNone(result_get_tasks_json['id'])            
+        self.assertIsNotNone(result_get_tasks_json['status'])         
         self.assertEqual(200,result_get_tasks.status_code)
 
     def test_get_task_by_id_invalid(self):
         self.task_mock(2)
         id_task = 4
-        endpoint_tasks = "/api/tasks/"+str(id_task)
-        self.token = ""
+        endpoint_tasks = "/api/tasks/"+str(id_task)        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
 
         result_get_tasks = self.client.get(endpoint_tasks, headers=self.headers)
@@ -264,8 +253,7 @@ class TestTask(TestCase):
     def test_delete_task_by_id_invalid(self):
         self.task_mock(2)
         id_task = 4
-        endpoint_tasks = "/api/tasks/"+str(id_task)
-        self.token = ""
+        endpoint_tasks = "/api/tasks/"+str(id_task)        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
 
         result_tasks = Task.query.all()
@@ -277,10 +265,9 @@ class TestTask(TestCase):
         self.assertEqual(204,result_get_tasks.status_code)
 
     def test_delete_task_by_id(self):
-        self.task_mock(2)
-        id_task = 1
-        endpoint_tasks = "/api/tasks/"+str(id_task)
-        self.token = ""
+        mock_task = self.task_mock(2)
+        
+        endpoint_tasks = "/api/tasks/"+str(mock_task[0].task_id)        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
 
         result_tasks = Task.query.all()
