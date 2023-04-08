@@ -1,3 +1,4 @@
+from datetime import datetime
 from marshmallow import fields, Schema
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 from sqlalchemy import TIMESTAMP, func
@@ -17,14 +18,16 @@ class Task(db.Model):
     created_at = db.Column(TIMESTAMP)
     updated_at = db.Column(TIMESTAMP, nullable=True)
 
-
-class Upload(db.Model):
-    __tablename__ = 'Upload'
+class File(db.Model):
+    __tablename__ = 'files'
     __table_args__ = {'extend_existing': True} 
-    id = db.Column(db.Integer, primary_key=True)
-    filename = db.Column(db.String(50))
-    data = db.Column(db.LargeBinary)
-    created_at = db.Column(TIMESTAMP)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True, nullable=False)
+    original_name = db.Column(db.String(100), nullable=False)
+    original_data = db.Column(db.LargeBinary, nullable=False)
+    compressed_name = db.Column(db.String(100), nullable=True)
+    compressed_data = db.Column(db.LargeBinary, nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
         
 
 class GetTaskSchema(Schema):

@@ -4,7 +4,7 @@ from app.models.models import Task
 from app.databases import db
 
 @celery.task(name='converter.request')
-def converter_request(task_id, url):
+def converter_request(task_id: str, file_id: int, new_format: str):
     pass
 
 
@@ -14,6 +14,6 @@ def converter_response(task_id, status):
     if task:
         task.updated_at = func.now()
         task.status = status
-        db.session.delete(task)
+        db.session.add(task)
         db.session.commit()
   

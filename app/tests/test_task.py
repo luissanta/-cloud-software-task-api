@@ -3,7 +3,7 @@ import os
 from unittest import TestCase
 import uuid
 from app.databases import db
-from app.models.models import Task, Upload
+from app.models.models import Task, File
 from app import app
 from flask_jwt_extended import create_access_token
 
@@ -18,7 +18,7 @@ class TestTask(TestCase):
         tasks = Task.query.all()
         for task in tasks:
             db.session.delete(task)   
-        uploads = Upload.query.all()
+        uploads = File.query.all()
         for upload in uploads:
             db.session.delete(upload)   
 

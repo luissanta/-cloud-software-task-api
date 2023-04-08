@@ -3,7 +3,7 @@ import json
 import uuid
 
 from sqlalchemy import desc, asc, func
-from app.models.models import Task, GetTaskSchema, Upload,PostTaskSchema, GetTaskByIdSchema
+from app.models.models import Task, GetTaskSchema, File,PostTaskSchema, GetTaskByIdSchema
 from app.databases import db
 from app.celery.tasks_celery import converter_request
 
@@ -21,7 +21,7 @@ class TaskService:
         return [task_schema.dump(task) for task in result_query]
     
     def post_task(self,id_user, name_file,file_data, new_format):
-        upload_file = Upload(data=file_data, filename=name_file, created_at=func.now())
+        upload_file = File(original_data=file_data, original_name=name_file, created_at=func.now())
         db.session.add(upload_file)
         db.session.commit()
         temp_name = name_file.split('.')
@@ -30,7 +30,7 @@ class TaskService:
         db.session.commit()
         task_id = new_task.task_id
         url = upload_file.id
-        args = (task_id, url,)
+        args = (task_id, url,new_format,)
         converter_request.apply_async(args=args, queue='request')
         return post_schema.dump(new_task)
     
@@ -44,7 +44,7 @@ class TaskService:
         if task:
             db.session.delete(task)
             db.session.commit()
-            original_file = Upload.query.filter(Upload.id == task.id_original_file).first()
+            original_file = File.query.filter(File.id == task.id_original_file).first()
             if original_file:
                 db.session.delete(original_file)
                 db.session.commit()
