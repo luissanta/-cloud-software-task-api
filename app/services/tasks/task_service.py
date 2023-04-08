@@ -1,5 +1,6 @@
 from enum import Enum
 import json
+import uuid
 
 from sqlalchemy import desc, asc, func
 from app.models.models import Task, GetTaskSchema, Upload,PostTaskSchema, GetTaskByIdSchema
@@ -24,7 +25,7 @@ class TaskService:
         db.session.add(upload_file)
         db.session.commit()
         temp_name = name_file.split('.')
-        new_task = Task(id_user=id_user,id_original_file=upload_file.id,file_name=temp_name[0], original_extension= temp_name[1] , new_extension=new_format, status="uploaded", created_at=func.now() )
+        new_task = Task(id_user=id_user,id_original_file=upload_file.id,file_name=temp_name[0], original_extension= temp_name[1] , new_extension=new_format, status="uploaded", created_at=func.now(), task_id = str(uuid.uuid4()) )
         db.session.add(new_task)
         db.session.commit()
         task_id = new_task.task_id
