@@ -4,6 +4,7 @@ import json
 from sqlalchemy import desc, asc, func
 from app.models.models import Task, GetTaskSchema, Upload,PostTaskSchema, GetTaskByIdSchema
 from app.databases import db
+from app.celery.tasks_celery import converter_request
 
 task_schema = GetTaskSchema()
 post_schema = PostTaskSchema()
@@ -23,9 +24,13 @@ class TaskService:
         db.session.add(upload_file)
         db.session.commit()
         temp_name = name_file.split('.')
-        new_task = Task(id_user=id_user,id_original_file=upload_file.id,file_name=temp_name[0], original_extension= temp_name[1] , new_extension=new_format, status="uploaded")
+        new_task = Task(id_user=id_user,id_original_file=upload_file.id,file_name=temp_name[0], original_extension= temp_name[1] , new_extension=new_format, status="uploaded", created_at=func.now() )
         db.session.add(new_task)
         db.session.commit()
+        task_id = new_task.task_id
+        url = upload_file.id
+        args = (task_id, url,)
+        converter_request.apply_async(args=args, queue='request')
         return post_schema.dump(new_task)
     
     def get_task_by_id(self, id_task):

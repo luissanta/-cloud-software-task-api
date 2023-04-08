@@ -3,7 +3,7 @@ import os
 from unittest import TestCase
 import uuid
 from app.databases import db
-from app.models import Task, Upload
+from app.models.models import Task, Upload
 from app import app
 
 class TestTask(TestCase):
