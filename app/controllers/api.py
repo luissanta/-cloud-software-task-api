@@ -1,11 +1,13 @@
 import json
 from flask import Blueprint, jsonify, request
+from flask_jwt_extended import jwt_required
 from app.services.tasks import TaskService
 
 api_routes = Blueprint('api', __name__)
 
 
 @api_routes.route('/tasks', methods=['GET'])
+@jwt_required()
 def get_tasks():
     max = request.args.get('max', None)
     order = request.args.get('order', None)
@@ -14,6 +16,7 @@ def get_tasks():
     return json.dumps(service.get_task(id_user, max, order))
 
 @api_routes.route('/tasks', methods=['POST'])
+@jwt_required()
 def create_task():
     file = request.files['file']
     new_format = request.form.get('newFormat', None)
@@ -27,12 +30,14 @@ def create_task():
 
 
 @api_routes.route('/tasks/<int:id_task>', methods=['GET'])
+@jwt_required()
 def get_task(id_task: int):
     service = TaskService()
     return json.dumps(service.get_task_by_id(id_task))
 
 
 @api_routes.route('/tasks/<int:id_task>', methods=['DELETE'])
+@jwt_required()
 def delete_task(id_task: int):
     service = TaskService()
     service.delete_task_by_id(id_task)

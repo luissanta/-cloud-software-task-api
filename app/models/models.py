@@ -13,10 +13,9 @@ class Task(db.Model):
     new_extension = db.Column(db.String(10))
     status = db.Column(db.String(10))
     id_user = db.Column(db.Integer)
-    id_converted_file = db.Column(db.Integer)
+    id_original_file = db.Column(db.Integer)
     created_at = db.Column(TIMESTAMP)
     updated_at = db.Column(TIMESTAMP, nullable=True)
-    id_original_file = db.Column(db.Integer, db.ForeignKey('upload.id'), nullable = True)
 
 
 class Upload(db.Model):
@@ -26,16 +25,14 @@ class Upload(db.Model):
     filename = db.Column(db.String(50))
     data = db.Column(db.LargeBinary)
     created_at = db.Column(TIMESTAMP)
-    
-    task = db.relationship('Task') 
+        
 
 class GetTaskSchema(Schema):
     class Meta:
         model = Task
         include_relationships = True
         include_fk = True
-        load_instance = True
-        
+        load_instance = True            
     id = fields.String()
     file_name = fields.String()
     original_extension = fields.String()
@@ -49,8 +46,8 @@ class PostTaskSchema(Schema):
         include_relationships = False
         include_fk = False
         load_instance = False
-        
     id = fields.String()
+    task_id = fields.String()
     status = fields.String()   
 
 class GetTaskByIdSchema(Schema):
@@ -59,7 +56,7 @@ class GetTaskByIdSchema(Schema):
         include_relationships = False
         include_fk = False
         load_instance = False
-        
-    id = fields.String()
+    id = fields.String()        
+    task_id = fields.String()
     status = fields.String()   
     file_name = fields.String()   
