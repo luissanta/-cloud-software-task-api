@@ -35,11 +35,11 @@ class TaskService:
         return post_schema.dump(new_task)
     
     def get_task_by_id(self, id_task):
-        result_query = Task.query.filter(Task.id == id_task).all()
-        return [get_task_by_id_schema.dump(task) for task in result_query]
+        result_query = Task.query.filter(Task.task_id == id_task).first()
+        return get_task_by_id_schema.dump(result_query)
     
     def delete_task_by_id(self, id_task):
-        task = Task.query.filter(Task.id == id_task).first()
+        task = Task.query.filter(Task.task_id == id_task).first()
         result = False
         if task:
             db.session.delete(task)

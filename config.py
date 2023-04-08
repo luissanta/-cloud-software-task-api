@@ -5,7 +5,7 @@ load_dotenv()
 
 
 class Config:
-    SECRET_KEY = os.environ.get("SECRET_KEY", "")
+    JWT_SECRET_KEY = 'SFDJKGKJFD7SG987FDS?9889'
     STATIC_FOLDER = "views/static/"
     SQLALCHEMY_DATABASE_URI = 'sqlite:///task.sqlite'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
