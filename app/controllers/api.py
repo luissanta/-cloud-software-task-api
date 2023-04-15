@@ -16,7 +16,7 @@ def get_tasks():
     return json.dumps(service.get_task(id_user, max, order))
 
 @api_routes.route('/tasks', methods=['POST'])
-# @jwt_required()
+@jwt_required()
 def create_task():
     file = request.files['file']
     new_format = request.form.get('newFormat', None)
@@ -26,7 +26,7 @@ def create_task():
 
     name_file = file.filename
     file_data = file.read()
-    id_user = 1
+    id_user = get_jwt_identity()
     service = TaskService()    
     return json.dumps(service.post_task(id_user, name_file, file_data, new_format))
 
