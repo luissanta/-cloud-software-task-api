@@ -251,7 +251,7 @@ class TestTask(TestCase):
         self.assertEqual(200,result_get_tasks.status_code)
 
     def test_delete_task_by_id_invalid(self):
-        self.task_mock(2)
+        self.task_mock_delete(2)
         id_task = 4
         endpoint_tasks = "/api/tasks/"+str(id_task)        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
@@ -262,10 +262,10 @@ class TestTask(TestCase):
         
         result_tasks = Task.query.all()
         self.assertEqual(3,len(result_tasks))
-        self.assertEqual(204,result_get_tasks.status_code)
+        self.assertEqual(200,result_get_tasks.status_code)
 
     def test_delete_task_by_id(self):
-        mock_task = self.task_mock(2)
+        mock_task = self.task_mock_delete(2)
         
         endpoint_tasks = "/api/tasks/"+str(mock_task[0].task_id)        
         self.headers = {'Content-Type': 'application/json', "Authorization": "Bearer {}".format(self.token)}
@@ -287,6 +287,33 @@ class TestTask(TestCase):
             original_extension = "pdf"
             new_extension = "zip"
             status = "Uploaded"
+            id_user = 1
+            new_task = Task(id_user = id_user, task_id=task_id, file_name=file_name, original_extension=original_extension,new_extension=new_extension, status=status)
+            tasks.append(new_task)
+            db.session.add(new_task)
+            db.session.commit()
+        
+        task_id = str(uuid.uuid4())
+        file_name = "myfile"
+        original_extension = "pdf"
+        new_extension = "zip"
+        status = "Uploaded"
+        id_user = 2
+        new_task = Task(id_user = id_user, task_id=task_id, file_name=file_name, original_extension=original_extension,new_extension=new_extension,status=status)
+        tasks.append(new_task)
+        db.session.add(new_task)
+        db.session.commit()
+        
+        return tasks
+    
+    def task_mock_delete(self, quantity):
+        tasks = []    
+        for i in range(0, quantity):    
+            task_id = str(uuid.uuid4())
+            file_name = "myfile"
+            original_extension = "pdf"
+            new_extension = "zip"
+            status = "processed"
             id_user = 1
             new_task = Task(id_user = id_user, task_id=task_id, file_name=file_name, original_extension=original_extension,new_extension=new_extension, status=status)
             tasks.append(new_task)

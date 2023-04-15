@@ -41,7 +41,10 @@ def get_task(id_task: str):
 @api_routes.route('/tasks/<id_task>', methods=['DELETE'])
 @jwt_required()
 def delete_task(id_task: str):
-    service = TaskService()
-    service.delete_task_by_id(id_task)
-    return {}, 204
+    service = TaskService()            
+    if(service.delete_task_by_id(id_task)):
+        return {}, 204
+    else:
+        return {'response':'Status not able to be deleted'}, 200
+
 
