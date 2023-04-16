@@ -2,8 +2,8 @@ flask
 flask-cors
 python-dotenv==1.0.0
 flask_sqlalchemy
-marshmallow==3.12.1
-marshmallow-sqlalchemy==0.25.0
+marshmallow
+marshmallow-sqlalchemy
 celery
 redis
 flask_jwt_extended
