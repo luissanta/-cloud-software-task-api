@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.tasks import TaskService
 
@@ -15,6 +15,7 @@ def get_tasks():
     service = TaskService()
     return json.dumps(service.get_task(id_user, max, order))
 
+
 @api_routes.route('/tasks', methods=['POST'])
 @jwt_required()
 def create_task():
@@ -22,7 +23,6 @@ def create_task():
     new_format = request.form.get('newFormat', None)
 
     if new_format is None:
-        print('entro')
         return "The newFormat is required", 400
 
     name_file = file.filename
@@ -46,6 +46,6 @@ def delete_task(id_task: str):
     if(service.delete_task_by_id(id_task)):
         return {}, 204
     else:
-        return {'response':'Status not able to be deleted'}, 200
+        return {'response': 'Status not able to be deleted'}, 200
 
 
