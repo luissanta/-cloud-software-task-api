@@ -22,6 +22,7 @@ def create_task():
     new_format = request.form.get('newFormat', None)
 
     if new_format is None:
+        print('entro')
         return "The newFormat is required", 400
 
     name_file = file.filename
