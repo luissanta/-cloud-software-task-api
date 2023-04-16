@@ -6,15 +6,14 @@ load_dotenv()
 
 
 class Config:
-
     STATIC_FOLDER = "views/static/"
     JWT_SECRET_KEY = os.environ.get("SECRET_KEY", "")
     SQLALCHEMY_DATABASE_URI = 'postgresql://' + \
-                               os.environ.get('PGSQL_USER') + ':' + \
-                               os.environ.get('PGSQL_PASSWORD') + '@' + \
-                               os.environ.get('PGSQL_HOST') + ':' + \
-                               os.environ.get('PGSQL_PORT') + '/' + \
-                               os.environ.get('PGSQL_DATABASE')
+                              os.environ.get('PGSQL_USER') + ':' + \
+                              os.environ.get('PGSQL_PASSWORD') + '@' + \
+                              os.environ.get('PGSQL_HOST') + ':' + \
+                              os.environ.get('PGSQL_PORT') + '/' + \
+                              os.environ.get('PGSQL_DATABASE')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     PROPAGATE_EXCEPTIONS = True
     ACCESS_EXPIRES = timedelta(hours=2)
