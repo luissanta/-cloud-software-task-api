@@ -47,5 +47,3 @@ def delete_task(id_task: str):
         return {}, 204
     else:
         return {'response': 'Status not able to be deleted'}, 422
-
-
