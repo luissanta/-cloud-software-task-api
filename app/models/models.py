@@ -5,7 +5,7 @@ from sqlalchemy import TIMESTAMP, func
 from app.databases.database import db
 
 class Task(db.Model):
-    __tablename__ = 'Task'
+    __tablename__ = 'tasks'
     __table_args__ = {'extend_existing': True} 
     id = db.Column(db.Integer, primary_key=True)
     task_id = db.Column(db.String(128))
