@@ -46,6 +46,6 @@ def delete_task(id_task: str):
     if(service.delete_task_by_id(id_task)):
         return {}, 204
     else:
-        return {'response': 'Status not able to be deleted'}, 200
+        return {'response': 'Status not able to be deleted'}, 422
 
 
