@@ -24,7 +24,7 @@ class TaskService:
 
         file_server = FileService()        
         temp_name = name_file.split('.')
-        id_file_upload = file_server.send_file(name_file,file_data)
+        id_file_upload = file_server.send_file(name_file,file_data,new_format)
         new_task = Task(id_user=id_user,id_original_file=id_file_upload,file_name=temp_name[0], original_extension= temp_name[1] , new_extension=new_format, status="uploaded", created_at=func.now(), task_id = str(uuid.uuid4()) )
         db.session.add(new_task)
         db.session.commit()

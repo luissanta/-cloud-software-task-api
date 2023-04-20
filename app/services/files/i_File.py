@@ -1,7 +1,7 @@
 class IFile:
 
-    def get(self,id, name, type) -> list:
+    def get(self,id, type) -> tuple:
         pass
 
-    def save(self,name, file) -> int:
+    def save(self,name, file, new_format) -> int:
         pass
