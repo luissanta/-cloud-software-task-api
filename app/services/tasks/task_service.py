@@ -1,12 +1,12 @@
 from enum import Enum
-import json
 import uuid
+from flask import request
 
 from sqlalchemy import desc, asc, func
 from app.models.models import Task, GetTaskSchema, File,PostTaskSchema, GetTaskByIdSchema
 from app.databases import db
 from app.celery.tasks_celery import converter_request
-
+from app.services.files.file_service import FileService
 task_schema = GetTaskSchema()
 post_schema = PostTaskSchema()
 get_task_by_id_schema = GetTaskByIdSchema()
@@ -21,15 +21,15 @@ class TaskService:
         return [task_schema.dump(task) for task in result_query]
     
     def post_task(self,id_user, name_file,file_data, new_format):
-        upload_file = File(original_data=file_data, original_name=name_file, created_at=func.now())
-        db.session.add(upload_file)
-        db.session.commit()
+
+        file_server = FileService()        
         temp_name = name_file.split('.')
-        new_task = Task(id_user=id_user,id_original_file=upload_file.id,file_name=temp_name[0], original_extension= temp_name[1] , new_extension=new_format, status="uploaded", created_at=func.now(), task_id = str(uuid.uuid4()) )
+        id_file_upload = file_server.send_file(name_file,file_data)
+        new_task = Task(id_user=id_user,id_original_file=id_file_upload,file_name=temp_name[0], original_extension= temp_name[1] , new_extension=new_format, status="uploaded", created_at=func.now(), task_id = str(uuid.uuid4()) )
         db.session.add(new_task)
         db.session.commit()
         task_id = new_task.task_id
-        url = upload_file.id
+        url = id_file_upload
         args = (task_id, url,new_format,)
         converter_request.apply_async(args=args, queue='request')
         return post_schema.dump(new_task)

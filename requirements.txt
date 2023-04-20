@@ -9,3 +9,4 @@ redis
 flask_jwt_extended
 psycopg2-binary
 gunicorn
+pysmb
