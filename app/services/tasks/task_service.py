@@ -1,10 +1,10 @@
-from enum import Enum
 import uuid
-from sqlalchemy import desc, asc, func
+from sqlalchemy import func
 from app.models.models import Task, GetTaskSchema, File, PostTaskSchema, GetTaskByIdSchema
 from app.databases import db
 from app.celery.tasks_celery import converter_request
 from app.services.files.file_service import FileService
+from app.enums.file import OrderEnum
 
 task_schema = GetTaskSchema()
 post_schema = PostTaskSchema()
@@ -12,16 +12,20 @@ get_task_by_id_schema = GetTaskByIdSchema()
 
 
 class TaskService:
-    def get_task(self, id_user, max, order):
-        type_order = OrderBy.asc if order is None or order == '0' else OrderBy.desc
-        if not max:
-            result_query = Task.query.filter(Task.id_user == id_user).order_by(type_order(Task.id)).all()
+    @classmethod
+    def get_task(cls, id_user, max_tasks, order_tasks):
+        type_order = OrderEnum.asc if order_tasks is None or order_tasks == '0' else OrderEnum.desc
+        if not max_tasks:
+            result_query = Task.query.filter(Task.id_user == id_user)\
+                .order_by(type_order(Task.id)).all()
         else:
-            result_query = Task.query.filter(Task.id_user == id_user).order_by(type_order(Task.id)).limit(max).all()
+            result_query = Task.query.filter(Task.id_user == id_user)\
+                .order_by(type_order(Task.id)).limit(max_tasks).all()
 
         return [task_schema.dump(task) for task in result_query]
 
-    def post_task(self, id_user, name_file, file_data, new_format):
+    @classmethod
+    def post_task(cls, id_user, name_file, file_data, new_format):
 
         file_server = FileService()
         temp_name = name_file.split('.')
@@ -43,11 +47,13 @@ class TaskService:
         # converter_request.apply_async(args=args, queue='request')
         return post_schema.dump(new_task)
 
-    def get_task_by_id(self, id_task):
+    @classmethod
+    def get_task_by_id(cls, id_task):
         result_query = Task.query.filter(Task.task_id == id_task).first()
         return get_task_by_id_schema.dump(result_query)
 
-    def delete_task_by_id(self, id_task):
+    @classmethod
+    def delete_task_by_id(cls, id_task):
         result = False
         try:
             task = Task.query.filter(Task.task_id == id_task).first()
@@ -62,8 +68,3 @@ class TaskService:
         except:
             result = False
         return result
-
-
-class OrderBy(Enum):
-    desc = desc
-    asc = asc

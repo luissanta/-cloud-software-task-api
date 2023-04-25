@@ -1,7 +1,7 @@
 from flask import Flask
 from config import ProductionConfig
 from flask_cors import CORS
-from app.controllers import api_routes
+from app.routes import api_routes
 from flask_jwt_extended import JWTManager
 from app.databases import db
 
