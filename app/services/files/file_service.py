@@ -1,15 +1,12 @@
 from app.models.models import GetTaskSchema, PostTaskSchema, GetTaskByIdSchema
 from .file_manager import FileManager
 from app.services.files.bucket_file_storage import BucketFileStorage
+from app.data_transfer_objects.file import FileTypeDTO
+
 task_schema = GetTaskSchema()
 post_schema = PostTaskSchema()
 get_task_by_id_schema = GetTaskByIdSchema()
 file_manager = FileManager(BucketFileStorage())
-
-
-class FileTypeDTO:
-    def __init__(self, file_type):
-        self.file_type = file_type.upper()
 
 
 class QueryParamsRequired(Exception):
@@ -25,8 +22,6 @@ class FileService:
         if not file_type.file_type:
             raise QueryParamsRequired('The type parameters is required')
 
-    def get_file(self, file_id: int, file_type: str):
-        file_type = FileTypeDTO(file_type)
-        self.validate_get_file(file_type)
+    def get_file(self, file_id: int, file_type: FileTypeDTO):
         data, name = file_manager.get_file(file_id, file_type)
         return data, name

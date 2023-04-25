@@ -4,6 +4,7 @@ from app.databases import db
 from .i_File import IFile
 import os
 from google.cloud import storage
+from app.data_transfer_objects.file import FileTypeDTO
 
 path = os.path.join(os.getcwd(), os.environ.get('GCP_PATH'))
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = path
@@ -24,10 +25,13 @@ class BucketFileStorage(IFile):
         db.session.commit()
         return upload_file.id
 
-    def get(self, file_id, file_type) -> tuple:
+    def get(self, file_id, file_type: FileTypeDTO) -> tuple:
         fetched_file = File.query.get_or_404(file_id)
 
-        blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' + fetched_file.original_name)
-        data = blob.download_as_bytes()
+        if file_type.file_type == FileTypeEnum.ORIGINAL.value:
+            blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' + fetched_file.original_name)
+        else:
+            blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_COMPRESSED') + '/' + fetched_file.original_name)
 
+        data = blob.download_as_bytes()
         return data, fetched_file.original_name

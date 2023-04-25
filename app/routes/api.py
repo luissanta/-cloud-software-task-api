@@ -55,7 +55,7 @@ def delete_task(id_task: str):
 
 @api_routes.route('/files/<int:file_id>', methods=['GET'])
 @jwt_required()
-def get_file(file_id: int):
+# def get_file(file_id: int):
     # file_type = request.args.get('type', 'original')
     # service = FileService()
     # data, name = service.get_file(file_id, file_type)
@@ -67,8 +67,8 @@ def get_file(file_id: int):
 def get_file(file_id: int):
     file_type = FileTypeDTO(request.args.get('type'))
     validate_get_file(file_type)
-    fetched_file = get_detail(File(id=file_id))
-    if file_type.file_type == FileTypeEnum.ORIGINAL.value:
-        return send_file(BytesIO(fetched_file.original_data), download_name=fetched_file.original_name), 200
-    if file_type.file_type == FileTypeEnum.COMPRESSED.value:
-        return send_file(BytesIO(fetched_file.compressed_data), download_name=fetched_file.compressed_name), 200
+
+    service = FileService()
+    data, name = service.get_file(file_id, file_type)
+
+    return send_file(BytesIO(data), download_name=name), 200

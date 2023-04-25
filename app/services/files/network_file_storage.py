@@ -15,7 +15,8 @@ class NetworkFileStorage(IFile):
     smb_server_ip = os.getenv("SMB_SERVER_IP", "")
     smb_folder_name = os.getenv("SMB_FORDER_NAME", "")
 
-    def extract_name(self, file, type_file):
+    @classmethod
+    def extract_name(cls, file, type_file):
         if type_file.file_type == FileTypeEnum.ORIGINAL.value:
             name = file.original_name.split('.')
             return file.original_name, "\\public\\original\\", name[1]
