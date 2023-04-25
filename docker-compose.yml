@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app
+    networks:
+      private-net:
+        aliases:
+          - local.task-api
+
+networks:
+  private-net:
+    external: true

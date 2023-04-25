@@ -44,11 +44,12 @@ def get_task(id_task: str):
 @jwt_required()
 def delete_task(id_task: str):
     service = TaskService()            
-    if(service.delete_task_by_id(id_task)):
+    if service.delete_task_by_id(id_task):
         return {}, 204
     else:
         return {'response': 'Status not able to be deleted'}, 422
-    
+
+
 @api_routes.route('/files/<int:file_id>', methods=['GET'])
 @jwt_required()
 def get_file(file_id: int):
