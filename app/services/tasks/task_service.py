@@ -39,8 +39,8 @@ class TaskService:
         db.session.commit()
         task_id = new_task.task_id
         url = id_file_upload
-        args = (task_id, url, new_format,)
-        converter_request.apply_async(args=args, queue='request')
+        # args = (task_id, url, new_format,)
+        # converter_request.apply_async(args=args, queue='request')
         return post_schema.dump(new_task)
 
     def get_task_by_id(self, id_task):

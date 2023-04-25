@@ -1,13 +1,8 @@
-from enum import Enum
 from sqlalchemy import func
 from app.models.models import File
 from app.databases import db
 from .i_File import IFile
-
-
-class FileTypeEnum(Enum):
-    ORIGINAL = 'ORIGINAL'
-    COMPRESSED = 'COMPRESSED'
+from app.enums.file import FileTypeEnum
 
 
 class DatabaseFileStorage(IFile):

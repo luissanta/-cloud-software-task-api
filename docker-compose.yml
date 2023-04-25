@@ -4,7 +4,9 @@ services:
   app:
     build: .
     volumes:
-      - .:/app
+      - .:/app_task
+    ports:
+      - "5002:5002"
     networks:
       private-net:
         aliases:

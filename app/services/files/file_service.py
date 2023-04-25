@@ -1,10 +1,10 @@
 from app.models.models import GetTaskSchema, PostTaskSchema, GetTaskByIdSchema
 from .file_manager import FileManager
-from app.services.files.network_file_storage import NetworkFileStorage
+from app.services.files.bucket_file_storage import BucketFileStorage
 task_schema = GetTaskSchema()
 post_schema = PostTaskSchema()
 get_task_by_id_schema = GetTaskByIdSchema()
-file_manager = FileManager(NetworkFileStorage())
+file_manager = FileManager(BucketFileStorage())
 
 
 class FileTypeDTO:

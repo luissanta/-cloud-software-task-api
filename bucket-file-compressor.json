@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "file-compressor-384322",
+  "private_key_id": "1091feea44d47b5766f4a2dafcff2713bf016937",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7mqA5VXjNvmN9\nWFVyNXCTeNH69n57Le2Janiw9suhY0zyacq5MU4pA6YMfywsdpaKExPIPYgWbI7q\nayZOX6j/ZUDTRMYoxEqabjTGr4TMthumaYk9yJUVMXgeKC5RlmulzGzsW44yqynF\n7Ufm4jkMoWZUXvHy+5/eAkPjo5Phfuy7+awKg5aoQpwyOWv0J45a1RAQkeJO0cUh\nuoSq+TSD7yG70U7WZUMIV32BLlN61+BJwvW0yUHKL+VWW2XJWXBetx6IBA5E7qY2\nwOx9LV9FvSyVWrHQdN5huC2f68x+xSmKFMur/3M91OPSVtOquhDHjyZ13LDg7J7D\nwlx4eW3NAgMBAAECggEAE0BQ9yE0u37b4cB0oDrTTxF5EWpFshPqn2J8I8NnmQDs\nzqbEL/swce1XFvWJOGorlNv+oy/hQlUog0NfPm/658kMUmxpHe+AAlc9y4e2YSAX\njUeg1uS5m7T5sQqJhO4ieh8/Vtp8Uz8U6HkqxYrAX5yZDh5iG1Tujk8oMqNraO+6\n5EhxlchYJ2iknV77Fr4JmXDcFouUJ9RfR+bkkgEr9QwviVXl9PNsQaeRQ7ckybch\naT5MXotHF7aRxfIFOrArddKpdvH5hQzYKJpS+nDq402+4gT0f8ARkEbAG9ANSD0/\nDZE+Ls26e/99tkeN2XAa6BW6fTwR5FFYWSgWsAz4BwKBgQDjYeKVowTsqbszohmK\nEFejv0OBkyvniVi3W1c3Yjk2W7Buj72JdPTduJQNhtNm/65+SKZmdv1uUACG7lpU\nhLn0VQRz91LSO6yg4j7C9tzYW7mv838bDL7/FyrsD4bzZmI8Xny1xf0AJEFsKysA\nXRG9x9Fl9iqZwZ+p0MzIIUm4DwKBgQDTNxuDuJwVyZY/N2oc0FlsT9z+8/lOZ+L5\nebDoIlUKpA4ufg+mFVzIrGqWkopCN6X+Sfsbons/duYa4G1oxHcNhRwHPTQJcG89\n2O8seJVC+hqmM/Etj7WyAUTo5k8fFmZKXoV8tOBJgRQPFpLllOfzeLdQ5AqqPsQL\n1t53dlTAYwKBgQDd+9kGdxE+rvGIle9S/2NgBEC2RmStdUP8NZsvAaCTNe5H8eJ7\nSIgp0aIQlpjaTDEhLnHtRKtkP4xULmxXaQBVzY48XK8peYKtylK1aeXu/5WHdjOX\nx9jLFuYbcYkxJLow75nWqAS4V6zbGkWv5CyG14XRggLS+tmSIrtZgk4C9wKBgAej\nXIlc6bgX/Cj5FgtItZMnKDTIGeHt+9VNw0oBw9WIrUKdKG+3Ig3XvlsHnZxbatNR\nVZVgQNjAsf2S1CIPyMZiY+sXGYSl3j/8UlnnWm57oO8VvckKA2YWialqer4DD1vt\nIyKpX9sIofMRu+o1glXZrbdtJ72UW36aHJ1xWAtFAoGAWoPifQNdCWKLqPIa0Nsw\n7MTR6HczBVxus7w3h8NJyVTl9C+pYFI6/gy7ccYSxASPundgIcpp8/6AmGanAusr\nq2cl91Gdw11zGVTXR4rp0ijMomaP7bI2FKCC39KW0BWYJMZ/gJfqh9CkZRIuALdS\nHV1Aic7GU0Y0Ebs2tUF7WQg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bucket-file-compressor@file-compressor-384322.iam.gserviceaccount.com",
+  "client_id": "100964043173445406116",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bucket-file-compressor%40file-compressor-384322.iam.gserviceaccount.com"
+}

@@ -6,19 +6,14 @@ from app.databases import db
 from smb.SMBConnection import SMBConnection
 from .i_File import IFile
 import os
-from enum import Enum
-
-
-class FileTypeEnum(Enum):
-    ORIGINAL = 'ORIGINAL'
-    COMPRESSED = 'COMPRESSED'
+from app.enums.file import FileTypeEnum
 
 
 class NetworkFileStorage(IFile):
-    smb_username = os.getenv("smb_username", "")
-    smb_password = os.getenv("smb_password", "")
-    smb_server_ip = os.getenv("smb_server_ip", "")
-    smb_folder_name = os.getenv("smb_folder_name", "")
+    smb_username = os.getenv("SMB_USERNAME", "")
+    smb_password = os.getenv("SMB_PASSWORD", "")
+    smb_server_ip = os.getenv("SMB_SERVER_IP", "")
+    smb_folder_name = os.getenv("SMB_FORDER_NAME", "")
 
     def extract_name(self, file, type_file):
         if type_file.file_type == FileTypeEnum.ORIGINAL.value:
@@ -43,7 +38,6 @@ class NetworkFileStorage(IFile):
         )
         conn.connect(self.smb_server_ip, 445)
         memoria = BytesIO()
-        file_obj = conn.retrieveFile(self.smb_folder_name, path + fetched_file.temporal_name + "." + extension, memoria)
         memoria.seek(0)
         data = memoria.read()
         memoria.close()

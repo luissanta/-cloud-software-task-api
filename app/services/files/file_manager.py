@@ -10,9 +10,9 @@ class FileManager:
         super().__init__()
 
     @final
-    def get_file(self, id, type):
-        return self.__manager.get(id, type)
+    def get_file(self, file_id, file_type):
+        return self.__manager.get(file_id, file_type)
 
     @final
-    def save_file(self, name, file, new_format):
-        return self.__manager.save(name, file, new_format)
+    def save_file(self, file_name, file_data, new_format):
+        return self.__manager.save(file_name, file_data, new_format)
