@@ -13,11 +13,11 @@ get_task_by_id_schema = GetTaskByIdSchema()
 
 class TaskService:
     def get_task(self, id_user, max, order):
-        typeOrder = orderby.asc if order == None or order == '0' else orderby.desc
+        type_order = OrderBy.asc if order is None or order == '0' else OrderBy.desc
         if not max:
-            result_query = Task.query.filter(Task.id_user == id_user).order_by(typeOrder(Task.id)).all()
+            result_query = Task.query.filter(Task.id_user == id_user).order_by(type_order(Task.id)).all()
         else:
-            result_query = Task.query.filter(Task.id_user == id_user).order_by(typeOrder(Task.id)).limit(max).all()
+            result_query = Task.query.filter(Task.id_user == id_user).order_by(type_order(Task.id)).limit(max).all()
 
         return [task_schema.dump(task) for task in result_query]
 
@@ -61,6 +61,6 @@ class TaskService:
         return result
 
 
-class orderby(Enum):
+class OrderBy(Enum):
     desc = desc
     asc = asc

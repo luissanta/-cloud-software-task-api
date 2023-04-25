@@ -10,24 +10,24 @@ api_routes = Blueprint('api', __name__)
 @api_routes.route('/tasks', methods=['GET'])
 @jwt_required()
 def get_tasks():
-    max = request.args.get('max', None)
-    order = request.args.get('order', None)
+    max_tasks = request.args.get('max', None)
+    order_tasks = request.args.get('order', None)
     id_user = get_jwt_identity()
     service = TaskService()
-    return json.dumps(service.get_task(id_user, max, order))
+    return service.get_task(id_user, max_tasks, order_tasks)
 
 
 @api_routes.route('/tasks', methods=['POST'])
 @jwt_required()
 def create_task():
-    file = request.files['file']
+    fetched_file = request.files['file']
     new_format = request.form.get('newFormat', None)
 
     if new_format is None:
         return "The newFormat is required", 400
 
-    name_file = file.filename
-    file_data = file.read()
+    name_file = fetched_file.filename
+    file_data = fetched_file.read()
     id_user = get_jwt_identity()
     service = TaskService()    
     return json.dumps(service.post_task(id_user, name_file, file_data, new_format)), 201
@@ -37,7 +37,7 @@ def create_task():
 @jwt_required()
 def get_task(id_task: str):
     service = TaskService()
-    return json.dumps(service.get_task_by_id(id_task))
+    return service.get_task_by_id(id_task)
 
 
 @api_routes.route('/tasks/<id_task>', methods=['DELETE'])
@@ -55,7 +55,7 @@ def delete_task(id_task: str):
 def get_file(file_id: int):
     file_type = request.args.get('type', 'original')    
     service = FileService()        
-    data, name = service.get_file(file_id,file_type)  
+    data, name = service.get_file(file_id, file_type)
     response = make_response(
         send_file(BytesIO(data), download_name=name))
     response.headers['Content-Disposition'] = "filename={}".format(name)
