@@ -13,7 +13,7 @@ bucket = storage_client.get_bucket(os.environ.get('GCP_BUCKET'))
 
 class BucketFileStorage(IFile):
     def save(self, file_name, file_data, new_format) -> int:
-        blob = bucket.blob(file_name)
+        blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' + file_name)
         blob.upload_from_string(file_data)
 
         upload_file = File(
@@ -24,5 +24,10 @@ class BucketFileStorage(IFile):
         db.session.commit()
         return upload_file.id
 
-    def get(self):
-        pass
+    def get(self, file_id, file_type) -> tuple:
+        fetched_file = File.query.get_or_404(file_id)
+
+        blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' + fetched_file.original_name)
+        data = blob.download_as_bytes()
+
+        return data, fetched_file.original_name

@@ -1,5 +1,4 @@
 import uuid
-from sqlalchemy import func
 from app.models.models import Task, GetTaskSchema, File, PostTaskSchema, GetTaskByIdSchema
 from app.databases import db
 from app.celery.tasks_celery import converter_request
@@ -35,8 +34,8 @@ class TaskService:
             id_original_file=id_file_upload,
             file_name=temp_name[0],
             original_extension=temp_name[1],
-            new_extension=new_format, status="uploaded",
-            created_at=func.now(),
+            new_extension=new_format,
+            status="uploaded",
             task_id=str(uuid.uuid4())
         )
         db.session.add(new_task)
@@ -65,6 +64,6 @@ class TaskService:
                     db.session.delete(original_file)
                     db.session.commit()
                 result = True
-        except:
+        except KeyError:
             result = False
         return result

@@ -1,9 +1,12 @@
 from io import BytesIO
-import json
 from flask import Blueprint, make_response, request, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.tasks import TaskService
 from app.services.files import FileService
+from app.data_transfer_objects.file import FileTypeDTO
+from app.enums.file import FileTypeEnum
+from app.validators.file import validate_get_file
+
 api_routes = Blueprint('api', __name__)
 
 
@@ -24,7 +27,7 @@ def create_task():
     new_format = request.form.get('newFormat', None)
 
     if new_format is None:
-        return "The newFormat is required", 400
+        return "The newFormat is required", 422
 
     name_file = fetched_file.filename
     file_data = fetched_file.read()
@@ -53,11 +56,19 @@ def delete_task(id_task: str):
 @api_routes.route('/files/<int:file_id>', methods=['GET'])
 @jwt_required()
 def get_file(file_id: int):
-    file_type = request.args.get('type', 'original')    
-    service = FileService()        
-    data, name = service.get_file(file_id, file_type)
-    response = make_response(
-        send_file(BytesIO(data), download_name=name))
-    response.headers['Content-Disposition'] = "filename={}".format(name)
-    response.status_code = 200
-    return response
+    # file_type = request.args.get('type', 'original')
+    # service = FileService()
+    # data, name = service.get_file(file_id, file_type)
+    # response = make_response(
+    #     send_file(BytesIO(data), download_name=name))
+    # response.headers['Content-Disposition'] = "filename={}".format(name)
+    # response.status_code = 200
+    # return response
+def get_file(file_id: int):
+    file_type = FileTypeDTO(request.args.get('type'))
+    validate_get_file(file_type)
+    fetched_file = get_detail(File(id=file_id))
+    if file_type.file_type == FileTypeEnum.ORIGINAL.value:
+        return send_file(BytesIO(fetched_file.original_data), download_name=fetched_file.original_name), 200
+    if file_type.file_type == FileTypeEnum.COMPRESSED.value:
+        return send_file(BytesIO(fetched_file.compressed_data), download_name=fetched_file.compressed_name), 200

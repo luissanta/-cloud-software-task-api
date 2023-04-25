@@ -4,6 +4,7 @@ __pycache__/
 .idea/
 .env
 .env.prod
+gcp_credentials.json
 venv/
 # C extensions
 *.so
