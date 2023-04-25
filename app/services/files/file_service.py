@@ -1,5 +1,3 @@
-
-
 from app.models.models import GetTaskSchema,PostTaskSchema, GetTaskByIdSchema, File
 from .file_manager import FileManager
 from app.services.files.network_file_storage import NetworkFileStorage
@@ -8,9 +6,11 @@ post_schema = PostTaskSchema()
 get_task_by_id_schema = GetTaskByIdSchema()
 file_manager = FileManager(NetworkFileStorage())
 
+
 class FileTypeDTO:
     def __init__(self, file_type):
         self.file_type = file_type.upper()
+
 
 class QueryParamsRequired(Exception):
     pass
