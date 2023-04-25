@@ -48,16 +48,19 @@ class TaskService:
         return get_task_by_id_schema.dump(result_query)
 
     def delete_task_by_id(self, id_task):
-        task = Task.query.filter(Task.task_id == id_task).first()
         result = False
-        if task and task.status.lower() == 'processed':
-            db.session.delete(task)
-            db.session.commit()
-            original_file = File.query.filter(File.id == task.id_original_file).first()
-            if original_file:
-                db.session.delete(original_file)
+        try:
+            task = Task.query.filter(Task.task_id == id_task).first()
+            if task and task.status.lower() == 'processed':
+                db.session.delete(task)
                 db.session.commit()
-            result = True
+                original_file = File.query.filter(File.id == task.id_original_file).first()
+                if original_file:
+                    db.session.delete(original_file)
+                    db.session.commit()
+                result = True
+        except:
+            result = False
         return result
 
 
