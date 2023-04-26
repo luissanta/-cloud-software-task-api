@@ -33,11 +33,13 @@ class BucketFileStorage(IFile):
 
     def get(self, file_id, file_type: FileTypeDTO) -> tuple:
         fetched_file = File.query.get_or_404(file_id)
+        temp_original_name = fetched_file.temporal_name + "." + fetched_file.original_name.split('.')[1]
+        temp_compressed_name = fetched_file.temporal_name + "." + fetched_file.new_format
 
         if file_type.file_type == FileTypeEnum.ORIGINAL.value:
-            blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' + fetched_file.original_name)
+            blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' + temp_original_name)
         else:
-            blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_COMPRESSED') + '/' + fetched_file.original_name)
+            blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_COMPRESSED') + '/' + temp_compressed_name)
 
         data = blob.download_as_bytes()
         return data, fetched_file.original_name
