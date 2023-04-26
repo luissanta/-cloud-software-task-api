@@ -25,7 +25,6 @@ class TaskService:
 
     @classmethod
     def post_task(cls, id_user, name_file, file_data, new_format):
-
         file_server = FileService()
         temp_name = name_file.split('.')
         id_file_upload = file_server.send_file(name_file, file_data, new_format)

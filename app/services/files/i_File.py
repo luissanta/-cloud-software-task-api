@@ -8,5 +8,5 @@ class IFile(ABC):
         pass
 
     @abstractmethod
-    def save(self, name, file, new_format) -> int:
+    def save(self, file_name, file_data, new_format) -> int:
         pass

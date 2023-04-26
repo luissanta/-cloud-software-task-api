@@ -1,10 +1,9 @@
 from io import BytesIO
-from flask import Blueprint, make_response, request, send_file
+from flask import Blueprint, request, send_file
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from app.services.tasks import TaskService
 from app.services.files import FileService
 from app.data_transfer_objects.file import FileTypeDTO
-from app.enums.file import FileTypeEnum
 from app.validators.file import validate_get_file
 
 api_routes = Blueprint('api', __name__)
@@ -55,15 +54,6 @@ def delete_task(id_task: str):
 
 @api_routes.route('/files/<int:file_id>', methods=['GET'])
 @jwt_required()
-# def get_file(file_id: int):
-    # file_type = request.args.get('type', 'original')
-    # service = FileService()
-    # data, name = service.get_file(file_id, file_type)
-    # response = make_response(
-    #     send_file(BytesIO(data), download_name=name))
-    # response.headers['Content-Disposition'] = "filename={}".format(name)
-    # response.status_code = 200
-    # return response
 def get_file(file_id: int):
     file_type = FileTypeDTO(request.args.get('type'))
     validate_get_file(file_type)

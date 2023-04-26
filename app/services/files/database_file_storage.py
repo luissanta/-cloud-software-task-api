@@ -21,10 +21,10 @@ class DatabaseFileStorage(IFile):
         name, data = self.extract_name(fetched_file, type_file)
         return data, name
 
-    def save(self, name_file, file_data, new_format) -> int:
+    def save(self, file_name, file_data, new_format) -> int:
         upload_file = File(
             original_data=file_data,
-            original_name=name_file,
+            original_name=file_name,
             created_at=func.now(),
             new_format=new_format
         )

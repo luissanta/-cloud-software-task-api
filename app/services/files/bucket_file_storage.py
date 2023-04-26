@@ -2,6 +2,7 @@ from app.enums.file import FileTypeEnum
 from app.models.models import File
 from app.databases import db
 from .i_File import IFile
+import uuid
 import os
 from google.cloud import storage
 from app.data_transfer_objects.file import FileTypeDTO
@@ -14,12 +15,17 @@ bucket = storage_client.get_bucket(os.environ.get('GCP_BUCKET'))
 
 class BucketFileStorage(IFile):
     def save(self, file_name, file_data, new_format) -> int:
-        blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' + file_name)
+        temporal_name = str(uuid.uuid4())
+        temp_original_name = file_name.split('.')
+        blob = bucket.blob(os.environ.get('GCP_BUCKET_PATH_ORIGINAL') + '/' +
+                           temporal_name + "." +
+                           temp_original_name[1])
         blob.upload_from_string(file_data)
 
         upload_file = File(
             original_name=file_name,
-            new_format=new_format
+            new_format=new_format,
+            temporal_name=temporal_name
         )
         db.session.add(upload_file)
         db.session.commit()

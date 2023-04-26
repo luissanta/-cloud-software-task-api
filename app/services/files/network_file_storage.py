@@ -46,9 +46,9 @@ class NetworkFileStorage(IFile):
 
         return data, original_name
 
-    def save(self, name_file, file_data, new_format) -> int:
+    def save(self, file_name, file_data, new_format) -> int:
         temporal_name = str(uuid.uuid4())
-        temp_original_name = name_file.split('.')
+        temp_original_name = file_name.split('.')
         conn = SMBConnection(
             self.smb_username,
             self.smb_password,
@@ -65,7 +65,7 @@ class NetworkFileStorage(IFile):
             print(f"Detail error: {e}")
 
         conn.close()
-        upload_file = File(original_name=name_file, created_at=func.now(), temporal_name=temporal_name,
+        upload_file = File(original_name=file_name, created_at=func.now(), temporal_name=temporal_name,
                            new_format=new_format)
         db.session.add(upload_file)
         db.session.commit()
