@@ -1,9 +1,9 @@
 import uuid
 from app.models.models import Task, GetTaskSchema, File, PostTaskSchema, GetTaskByIdSchema
 from app.databases import db
-from app.celery.tasks_celery import converter_request
 from app.services.files.file_service import FileService
 from app.enums.file import OrderEnum
+from app.services.gcp.pubSubTopic import PubSubTopic
 
 task_schema = GetTaskSchema()
 post_schema = PostTaskSchema()
@@ -26,6 +26,8 @@ class TaskService:
     @classmethod
     def post_task(cls, id_user, name_file, file_data, new_format):
         file_server = FileService()
+        pub_sub_topic = PubSubTopic()
+
         temp_name = name_file.split('.')
         id_file_upload = file_server.send_file(name_file, file_data, new_format)
         new_task = Task(
@@ -41,8 +43,8 @@ class TaskService:
         db.session.commit()
         task_id = new_task.task_id
         url = id_file_upload
-        args = (task_id, url, new_format)
-        converter_request.apply_async(args=args, queue='request')
+        msg = dict(task_id=task_id, url=url, new_format=new_format)
+        pub_sub_topic.send_message(msg)
         return post_schema.dump(new_task)
 
     @classmethod
