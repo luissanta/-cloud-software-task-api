@@ -3,7 +3,7 @@ from app.models.models import Task, GetTaskSchema, File, PostTaskSchema, GetTask
 from app.databases import db
 from app.services.files.file_service import FileService
 from app.enums.file import OrderEnum
-from app.services.gcp.pubSubTopic import PubSubTopic
+from app.services.gcp.pub_sub_topic import PubSubTopic
 
 task_schema = GetTaskSchema()
 post_schema = PostTaskSchema()
