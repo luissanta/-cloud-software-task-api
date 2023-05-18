@@ -6,7 +6,7 @@ services:
     volumes:
       - .:/app_task
     ports:
-      - "5002:5002"
+      - "5002:8080"
     networks:
       private-net:
         aliases:

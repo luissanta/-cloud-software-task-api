@@ -2,12 +2,12 @@ FROM python:3.10
 
 WORKDIR /app_task
 
-COPY requirements.txt requirements.txt
+COPY . /app_task
 
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+EXPOSE 8080
 
-EXPOSE 5002
+ENV DOTENV_PATH=/app/.env
 
-CMD ["gunicorn", "-b", "0.0.0.0:5002", "-w", "2", "--threads", "2", "wsgi:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:8080", "-w", "2", "--threads", "2", "wsgi:app"]
