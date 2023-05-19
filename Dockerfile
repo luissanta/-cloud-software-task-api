@@ -4,6 +4,8 @@ WORKDIR /app_task
 
 COPY . /app_task
 
+COPY gcp_credentials.json /app_task/gcp_credentials.json
+
 RUN pip install --no-cache-dir -r requirements.txt
 
 EXPOSE 8080
